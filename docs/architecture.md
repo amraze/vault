@@ -10,7 +10,7 @@ vault/
 │   │   │   ├── Vault.Identity.Infrastructure/    # data access, external adapters
 │   │   │   └── Vault.Identity.Api/               # Minimal API host, the entry point
 │   │   │
-│   │   ├── Customer/  ...  
+│   │   ├── Onboarding/  ...  
 │   │   └── ...
 │   │
 │   ├── BuildingBlocks/                         # shared *technical* plumbing — NOT business logic
@@ -30,7 +30,7 @@ vault/
 │   ├── Identity/
 │   │   ├── Vault.Identity.UnitTests/
 │   │   └── Vault.Identity.IntegrationTests/
-│   ├── Customer/  ...  (same per service)
+│   ├── Onboarding/  ...  (same per service)
 │   └── ...
 │
 ├── deploy/
