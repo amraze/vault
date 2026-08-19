@@ -1,1 +1,9 @@
-<Solution />
+<Solution>
+  <Folder Name="/Services/" />
+  <Folder Name="/Services/OnBoarding/">
+    <Project Path="src/Services/OnBoarding/Vault.Services.OnBoarding.Api/Vault.Services.OnBoarding.Api.csproj" Id="1e8011db-0945-415d-a22c-e5a044c7a8aa" />
+    <Project Path="src/Services/OnBoarding/Vault.Services.OnBoarding.Application/Vault.Services.OnBoarding.Application.csproj" Id="1546fcc2-295b-4c82-bd16-55ea454901f4" />
+    <Project Path="src/Services/OnBoarding/Vault.Services.OnBoarding.Domain/Vault.Services.OnBoarding.Domain.csproj" Id="458462b8-acd1-4c8d-b311-1536113f1bb6" />
+    <Project Path="src/Services/OnBoarding/Vault.Services.OnBoarding.Infrastructure/Vault.Services.OnBoarding.Infrastructure.csproj" Id="6603d3b8-ce82-4839-bda6-be67f435f7cc" />
+  </Folder>
+</Solution>
