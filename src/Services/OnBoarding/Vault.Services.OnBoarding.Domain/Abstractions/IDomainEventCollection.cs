@@ -10,6 +10,6 @@
 
     public interface IDomainEvent
     {
-        DateTimeOffset OccurredOn { get; }
+        DateTime? OccurredOn { get; }
     }
 }
