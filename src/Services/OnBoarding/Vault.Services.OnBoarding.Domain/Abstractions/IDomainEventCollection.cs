@@ -4,7 +4,6 @@
     public interface IDomainEventCollection
     {
         IReadOnlyCollection<IDomainEvent> DomainEvents { get; }
-
         void ClearDomainEvents();
     }
 
