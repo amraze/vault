@@ -1,5 +1,6 @@
 ﻿using Vault.Services.OnBoarding.Domain.Abstractions;
 using Vault.Services.OnBoarding.Domain.CustomerProfiles.Enums;
+using Vault.Services.OnBoarding.Domain.CustomerProfiles.Events;
 
 namespace Vault.Services.OnBoarding.Domain.CustomerProfiles
 {
@@ -7,7 +8,8 @@ namespace Vault.Services.OnBoarding.Domain.CustomerProfiles
     public sealed class CustomerProfile : AggregateRoot<Guid>
     {
         private CustomerProfile() { }   // EF
-        private CustomerProfile(Guid id, Guid userId, string firstName, string lastName, DateOnly dateOfBirth) : base(id)
+
+        private CustomerProfile(Guid id, Guid userId, string firstName, string lastName, DateOnly dateOfBirth): base(id)
         {
             UserId = userId;
             FirstName = firstName;
@@ -21,46 +23,55 @@ namespace Vault.Services.OnBoarding.Domain.CustomerProfiles
         public string LastName { get; private set; } = null!;
         public DateOnly DateOfBirth { get; private set; }
         public KycState KycStatus { get; private set; }
-        public DateTime? VerifiedAt { get; private set; }
+        public DateTimeOffset? VerifiedAt { get; private set; }
 
         /// <summary>Registers a new, unverified customer profile.</summary>
-        public static CustomerProfile Register(Guid userId, string firstName, string lastName, DateOnly dateOfBirth, DateTime utcNow, int minimumAge)
+        public static CustomerProfile Register(Guid userId, string firstName, string lastName, DateOnly dateOfBirth, DateTimeOffset now, int minimumAge)
         {
             if (userId == Guid.Empty) throw new ArgumentException("UserId is required.", nameof(userId));
             ArgumentException.ThrowIfNullOrWhiteSpace(firstName);
             ArgumentException.ThrowIfNullOrWhiteSpace(lastName);
             ArgumentOutOfRangeException.ThrowIfNegative(minimumAge);
-            if (dateOfBirth > DateOnly.FromDateTime(utcNow).AddYears(-minimumAge)) 
+            if (dateOfBirth > DateOnly.FromDateTime(now.UtcDateTime).AddYears(-minimumAge))
                 throw new ArgumentOutOfRangeException(nameof(dateOfBirth), $"Customer must be at least {minimumAge} years old.");
 
-            return new CustomerProfile(Guid.CreateVersion7(), userId, firstName.Trim(), lastName.Trim(), dateOfBirth);
+            var profile = new CustomerProfile(Guid.CreateVersion7(), userId, firstName.Trim(), lastName.Trim(), dateOfBirth);
+
+            profile.RaiseEvent(new CustomerProfileRegistered(profile.Id, userId, now));
+            return profile;
         }
 
         /// <summary>Submits the profile for KYC review.</summary>
-        public void MarkPending()
+        public void MarkPending(DateTimeOffset now)
         {
-            if (KycStatus is not (KycState.Unverified or KycState.Rejected)) throw new InvalidOperationException($"Cannot submit KYC from state {KycStatus}.");
+            if (KycStatus is not (KycState.Unverified or KycState.Rejected))
+                throw new InvalidOperationException($"Cannot submit KYC from state {KycStatus}.");
 
             KycStatus = KycState.Pending;
             VerifiedAt = null;
+            RaiseEvent(new KycSubmitted(Id, now));
         }
 
         /// <summary>Records a successful KYC verification.</summary>
-        public void MarkVerified(DateTime verifiedAtUtc)
+        public void MarkVerified(DateTimeOffset verifiedAt)
         {
-            if (KycStatus is not KycState.Pending) throw new InvalidOperationException($"Cannot verify from state {KycStatus}.");
+            if (KycStatus is not KycState.Pending)
+                throw new InvalidOperationException($"Cannot verify from state {KycStatus}.");
 
             KycStatus = KycState.Verified;
-            VerifiedAt = verifiedAtUtc;
+            VerifiedAt = verifiedAt;
+            RaiseEvent(new KycVerified(Id, verifiedAt));
         }
 
         /// <summary>Records a failed KYC verification.</summary>
-        public void MarkRejected()
+        public void MarkRejected(DateTimeOffset now)
         {
-            if (KycStatus is not KycState.Pending) throw new InvalidOperationException($"Cannot reject from state {KycStatus}.");
+            if (KycStatus is not KycState.Pending)
+                throw new InvalidOperationException($"Cannot reject from state {KycStatus}.");
 
             KycStatus = KycState.Rejected;
             VerifiedAt = null;
+            RaiseEvent(new KycRejected(Id, now));
         }
     }
 }
