@@ -1,6 +1,6 @@
 ﻿using Vault.Services.OnBoarding.Domain.Abstractions;
 
-namespace Vault.Services.OnBoarding.Domain.CustomerProfiles.Events
+namespace Vault.Services.OnBoarding.Domain.CustomerProfileAggregate.Events
 {
     /// <summary>A customer profile was registered and awaits KYC.</summary>
     public sealed record CustomerProfileRegistered(Guid CustomerProfileId, Guid UserId, DateTimeOffset OccurredOn) : IDomainEvent;

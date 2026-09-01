@@ -1,8 +1,9 @@
 ﻿using Vault.Services.OnBoarding.Domain.Abstractions;
-using Vault.Services.OnBoarding.Domain.CustomerProfiles.Enums;
-using Vault.Services.OnBoarding.Domain.CustomerProfiles.Events;
+using Vault.Services.OnBoarding.Domain.CustomerProfileAggregate.Enums;
+using Vault.Services.OnBoarding.Domain.CustomerProfileAggregate.Events;
+using Vault.Services.OnBoarding.Domain.Exceptions;
 
-namespace Vault.Services.OnBoarding.Domain.CustomerProfiles
+namespace Vault.Services.OnBoarding.Domain.CustomerProfileAggregate
 {
     /// <summary>Aggregate Root for customer profiles aggregate : Register(), MarkPending(), MarkVerified(), MarkRejected()</summary>
     public sealed class CustomerProfile : AggregateRoot<Guid>
@@ -33,7 +34,7 @@ namespace Vault.Services.OnBoarding.Domain.CustomerProfiles
             ArgumentException.ThrowIfNullOrWhiteSpace(lastName);
             ArgumentOutOfRangeException.ThrowIfNegative(minimumAge);
             if (dateOfBirth > DateOnly.FromDateTime(now.UtcDateTime).AddYears(-minimumAge))
-                throw new ArgumentOutOfRangeException(nameof(dateOfBirth), $"Customer must be at least {minimumAge} years old.");
+                throw new DomainException($"Customer must be at least {minimumAge} years old.");
 
             var profile = new CustomerProfile(Guid.CreateVersion7(), userId, firstName.Trim(), lastName.Trim(), dateOfBirth);
 
@@ -45,7 +46,7 @@ namespace Vault.Services.OnBoarding.Domain.CustomerProfiles
         public void MarkPending(DateTimeOffset now)
         {
             if (KycStatus is not (KycState.Unverified or KycState.Rejected))
-                throw new InvalidOperationException($"Cannot submit KYC from state {KycStatus}.");
+                throw new ConflictException("submit KYC", KycStatus);
 
             KycStatus = KycState.Pending;
             VerifiedAt = null;
@@ -56,7 +57,7 @@ namespace Vault.Services.OnBoarding.Domain.CustomerProfiles
         public void MarkVerified(DateTimeOffset verifiedAt)
         {
             if (KycStatus is not KycState.Pending)
-                throw new InvalidOperationException($"Cannot verify from state {KycStatus}.");
+                throw new ConflictException("verify", KycStatus);
 
             KycStatus = KycState.Verified;
             VerifiedAt = verifiedAt;
@@ -67,7 +68,7 @@ namespace Vault.Services.OnBoarding.Domain.CustomerProfiles
         public void MarkRejected(DateTimeOffset now)
         {
             if (KycStatus is not KycState.Pending)
-                throw new InvalidOperationException($"Cannot reject from state {KycStatus}.");
+                throw new ConflictException("reject", KycStatus);
 
             KycStatus = KycState.Rejected;
             VerifiedAt = null;
