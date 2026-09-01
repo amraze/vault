@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Vault.Services.OnBoarding.Domain\Vault.Services.OnBoarding.Domain.csproj" />
+    <ProjectReference Include="..\Vault.Services.OnBoarding.Application\Vault.Services.OnBoarding.Application.csproj" />
+  </ItemGroup>
+
 </Project>
