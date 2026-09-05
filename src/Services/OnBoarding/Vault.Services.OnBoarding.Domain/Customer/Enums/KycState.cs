@@ -1,4 +1,4 @@
-﻿namespace Vault.Services.OnBoarding.Domain.CustomerProfileAggregate.Enums
+﻿namespace Vault.Services.OnBoarding.Domain.Customer.Enums
 {
     /// <summary>KycState different states a customer's KYC status can be in.</summary>
     public enum KycState

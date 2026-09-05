@@ -2,7 +2,7 @@
 
 ```mermaid
 classDiagram
-  namespace CustomerProfileAggregate {
+  namespace Customer {
     class CustomerProfile {
       +uuid id
       +uuid user_id
@@ -28,7 +28,7 @@ classDiagram
     }
   }
 
-  namespace KycReviewAggregate {
+  namespace KycReview {
     class KycReview {
       +uuid id
       +uuid customer_id
@@ -38,7 +38,7 @@ classDiagram
     }
   }
 
-  namespace DocumentAggregate {
+  namespace Document {
     class IdentityDocument {
       +uuid id
       +uuid customer_id

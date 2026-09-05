@@ -1,9 +1,9 @@
 ﻿using Vault.Services.OnBoarding.Domain.Abstractions;
-using Vault.Services.OnBoarding.Domain.CustomerProfileAggregate.Enums;
-using Vault.Services.OnBoarding.Domain.CustomerProfileAggregate.Events;
+using Vault.Services.OnBoarding.Domain.Customer.Enums;
+using Vault.Services.OnBoarding.Domain.Customer.Events;
 using Vault.Services.OnBoarding.Domain.Exceptions;
 
-namespace Vault.Services.OnBoarding.Domain.CustomerProfileAggregate
+namespace Vault.Services.OnBoarding.Domain.Customer
 {
     /// <summary>Aggregate Root for customer profiles aggregate : Register(), MarkPending(), MarkVerified(), MarkRejected()</summary>
     public sealed class CustomerProfile : AggregateRoot<Guid>
