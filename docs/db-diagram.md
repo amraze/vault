@@ -28,7 +28,7 @@ classDiagram
     }
   }
 
-  namespace KycReview {
+  namespace Kyc {
     class KycReview {
       +uuid id
       +uuid customer_id

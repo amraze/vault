@@ -9,6 +9,7 @@ namespace Vault.Services.OnBoarding.Application
         {
             var assembly = typeof(ApplicationServiceExtensions).Assembly;
 
+
             services.AddMediatR(cfg =>
             {
                 cfg.RegisterServicesFromAssembly(assembly);

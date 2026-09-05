@@ -20,8 +20,8 @@ namespace Vault.Services.OnBoarding.Domain.Customer
         }
 
         public Guid UserId { get; private set; }
-        public string FirstName { get; private set; } = null!;
-        public string LastName { get; private set; } = null!;
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
         public DateOnly DateOfBirth { get; private set; }
         public KycState KycStatus { get; private set; }
         public DateTimeOffset? VerifiedAt { get; private set; }
