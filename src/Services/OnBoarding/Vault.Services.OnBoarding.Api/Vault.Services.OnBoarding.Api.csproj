@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Vault.Services.OnBoarding.Application\Vault.Services.OnBoarding.Application.csproj" />
     <ProjectReference Include="..\Vault.Services.OnBoarding.Infrastructure\Vault.Services.OnBoarding.Infrastructure.csproj" />
   </ItemGroup>
 
