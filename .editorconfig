@@ -1,0 +1,53 @@
+﻿## Vault — banned APIs (Microsoft.CodeAnalysis.BannedApiAnalyzers, RS0030)
+##
+## Format:  <prefix>:<symbol-id>;<message>
+##   T:  type          M:  method          P:  property         F:  field
+##
+## These are the highest-value rules in the repo. No style rule can catch what
+## is on this list, and every entry maps to a specific way a ledger loses money.
+
+## ── Floating point in monetary code ──────────────────────────────────────────
+## Section 5: "an account's balance must always equal the sum of all its
+## transactions". That invariant is arithmetically impossible in binary floating
+## point — 0.1 + 0.2 != 0.3. Use decimal, or an integer minor-unit type.
+T:System.Double;Use decimal for monetary amounts. Binary floating point cannot represent decimal fractions exactly and will break the balance invariant.
+T:System.Single;Use decimal for monetary amounts.
+M:System.Math.Round(System.Double,System.Int32);Use Math.Round(decimal, int, MidpointRounding) with an explicit rounding mode.
+
+## ── Ambient time ─────────────────────────────────────────────────────────────
+## Statement periods (6.7) and standing-order schedules (6.5) are date-boundary
+## logic. Ambient time makes them untestable and makes behaviour depend on the
+## pod's timezone.
+P:System.DateTime.Now;Inject TimeProvider. Ambient local time is untestable and timezone-dependent.
+P:System.DateTime.UtcNow;Inject TimeProvider (TimeProvider.GetUtcNow) so schedules and statement boundaries are testable.
+P:System.DateTime.Today;Inject TimeProvider.
+P:System.DateTimeOffset.Now;Inject TimeProvider.
+P:System.DateTimeOffset.UtcNow;Inject TimeProvider.
+
+## ── Non-deterministic identity ───────────────────────────────────────────────
+## Ordering matters for ledger reads. Guid.NewGuid() is random and fragments
+## clustered indexes; prefer a sequential UUID (v7) behind an abstraction.
+M:System.Guid.NewGuid;Inject IIdGenerator (UUIDv7) — sequential ids keep index locality and make tests deterministic.
+
+## ── Insecure randomness ──────────────────────────────────────────────────────
+T:System.Random;Use RandomNumberGenerator for anything user-visible: account numbers, references, tokens, OTPs.
+
+## ── Blocking on async ────────────────────────────────────────────────────────
+## Thread-pool starvation under load, and a deadlock risk that only shows up
+## in production.
+P:System.Threading.Tasks.Task`1.Result;Await the task.
+M:System.Threading.Tasks.Task.Wait;Await the task.
+M:System.Threading.Thread.Sleep(System.Int32);Use await Task.Delay(..., cancellationToken).
+
+## ── Culture-dependent conversions ────────────────────────────────────────────
+## An amount parsed under a different locale reads 1,234.56 as 1.23456.
+M:System.Decimal.Parse(System.String);Pass CultureInfo.InvariantCulture explicitly.
+M:System.Double.Parse(System.String);Use decimal, with InvariantCulture.
+M:System.DateTime.Parse(System.String);Pass CultureInfo.InvariantCulture and an explicit format.
+
+## ── Service location ─────────────────────────────────────────────────────────
+## Hides dependencies from the constructor and defers failure to runtime.
+T:System.IServiceProvider;Inject dependencies via the constructor. Permitted only inside DI registration lambdas — suppress locally with a justification.
+
+## ── Console output ───────────────────────────────────────────────────────────
+T:System.Console;Use ILogger. Console output bypasses structured logging and correlation ids.

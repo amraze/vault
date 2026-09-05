@@ -10,7 +10,7 @@ namespace Vault.Services.OnBoarding.Domain.CustomerProfileAggregate
     {
         private CustomerProfile() { }   // EF
 
-        private CustomerProfile(Guid id, Guid userId, string firstName, string lastName, DateOnly dateOfBirth): base(id)
+        private CustomerProfile(Guid id, Guid userId, string firstName, string lastName, DateOnly dateOfBirth) : base(id)
         {
             UserId = userId;
             FirstName = firstName;

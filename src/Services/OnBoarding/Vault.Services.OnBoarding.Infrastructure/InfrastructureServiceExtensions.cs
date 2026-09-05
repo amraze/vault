@@ -13,4 +13,4 @@ namespace Vault.Services.OnBoarding.Infrastructure
             return services;
         }
     }
-}           
+}
