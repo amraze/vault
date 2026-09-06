@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Vault.Services.OnBoarding.Domain\Vault.Services.OnBoarding.Domain.csproj" />
     <ProjectReference Include="..\Vault.Services.OnBoarding.Application\Vault.Services.OnBoarding.Application.csproj" />
   </ItemGroup>
