@@ -2,7 +2,7 @@
 
 namespace Vault.Services.OnBoarding.Application.Features.Customers.Commands.CreateCustomerProfile
 {
-    public sealed record CreateCustomerProfileCommand : IRequest<Guid>
+    public sealed record CreateCustomerProfileCommand : IRequest<CreateCustomerProfileResponseDto>
     {
         public required string FirstName { get; init; }
         public required string LastName { get; init; }
