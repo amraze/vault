@@ -5,7 +5,7 @@ namespace Vault.Services.OnBoarding.Application.Ports
     /// <summary>
     /// Persistence port for the CustomerProfile aggregate. Methods stage work only;
     /// </summary>
-    public interface ICustomerProfileRepository
+    public interface ICustomerRepository
     {
         /// <summary>
         /// True when the login already has a profile. This is for a clean 409 - the unique

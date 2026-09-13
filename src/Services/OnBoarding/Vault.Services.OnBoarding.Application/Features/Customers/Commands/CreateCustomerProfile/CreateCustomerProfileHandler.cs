@@ -5,7 +5,7 @@ using Vault.Services.OnBoarding.Domain.Exceptions;
 
 namespace Vault.Services.OnBoarding.Application.Features.Customers.Commands.CreateCustomerProfile
 {
-    internal sealed class CreateCustomerProfileHandler(ICustomerProfileRepository customerProfileRepository, IUnitOfWork unitOfWork, TimeProvider timeProvider) : IRequestHandler<CreateCustomerProfileCommand, Guid>
+    internal sealed class CreateCustomerProfileHandler(ICustomerRepository customerProfileRepository, IUnitOfWork unitOfWork, TimeProvider timeProvider) : IRequestHandler<CreateCustomerProfileCommand, Guid>
     {
         private const int MinimumAge = 18;
 

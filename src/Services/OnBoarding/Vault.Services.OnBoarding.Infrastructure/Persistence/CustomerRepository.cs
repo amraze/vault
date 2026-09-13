@@ -4,8 +4,8 @@ using Vault.Services.OnBoarding.Domain.Customer;
 
 namespace Vault.Services.OnBoarding.Infrastructure.Persistence
 {
-    /// <summary>EF Core adapter for <see cref="ICustomerProfileRepository"/>.</summary>
-    internal sealed class CustomerProfileRepository(DbContext dbContext) : ICustomerProfileRepository
+    /// <summary>EF Core adapter for <see cref="ICustomerRepository"/>.</summary>
+    internal sealed class CustomerRepository(DbContext dbContext) : ICustomerRepository
     {
         public Task<bool> ExistsForUserAsync(Guid userId, CancellationToken ct = default) =>
             dbContext.Set<CustomerProfile>().AnyAsync(profile => profile.UserId == userId, ct);
