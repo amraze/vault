@@ -6,11 +6,8 @@ using Vault.Services.OnBoarding.Infrastructure.Adapters.Persistence.Models;
 namespace Vault.Services.OnBoarding.Infrastructure.Adapters.Persistence.Repositories
 {
     /// <summary>EF Core adapter for <see cref="ICustomerRepository"/>.</summary>
-    internal sealed class CustomerRepository(OnBoardingDbContext dbContext) : ICustomerRepository
+    internal sealed class CustomerCommandRepository(OnBoardingDbContext dbContext) : ICustomerCommandRepository
     {
-        public Task<bool> ExistsForUserAsync(Guid userId, CancellationToken ct = default) =>
-            dbContext.Set<PersistenceCustomerProfile>().AnyAsync(cp => cp.UserId == userId, ct);
-
         public async Task<Guid> AddAsync(CustomerProfile cp, CancellationToken ct = default)
         {
             var pcp = new PersistenceCustomerProfile
@@ -26,4 +23,11 @@ namespace Vault.Services.OnBoarding.Infrastructure.Adapters.Persistence.Reposito
             return cp.Id;
         }
     }
+
+    internal sealed class CustomerQueryRepository(OnBoardingDbContext dbContext) : ICustomerQueryRepository
+    {
+        public Task<bool> ExistsForUserAsync(Guid userId, CancellationToken ct = default) =>
+            dbContext.Set<PersistenceCustomerProfile>().AnyAsync(cp => cp.UserId == userId, ct);
+    }
+
 }

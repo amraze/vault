@@ -5,7 +5,7 @@ using Vault.Services.OnBoarding.Domain.Exceptions;
 
 namespace Vault.Services.OnBoarding.Application.Features.Customers.Commands.CreateCustomerProfile
 {
-    internal sealed class CreateCustomerProfileHandler(ICustomerRepository customerProfileRepository, IUnitOfWork unitOfWork) : IRequestHandler<CreateCustomerProfileCommand, CreateCustomerProfileResponseDto>
+    internal sealed class CreateCustomerProfileHandler(ICustomerCommandRepository customerCommandRepository, ICustomerQueryRepository customerQueryRepository, IUnitOfWork unitOfWork) : IRequestHandler<CreateCustomerProfileCommand, CreateCustomerProfileResponseDto>
     {
         private const int MinimumAge = 18;
 
@@ -13,12 +13,12 @@ namespace Vault.Services.OnBoarding.Application.Features.Customers.Commands.Crea
         {
             var userId = Guid.CreateVersion7();
 
-            if (await customerProfileRepository.ExistsForUserAsync(userId, ct))
+            if (await customerQueryRepository.ExistsForUserAsync(userId, ct))
                 throw new ConflictException($"Login '{userId}' already has a customer profile.");
 
             var profile = CustomerProfile.Register(userId, request.FirstName, request.LastName, request.DateOfBirth, DateTimeOffset.UtcNow, MinimumAge);
 
-            var profileId = await customerProfileRepository.AddAsync(profile, ct);
+            var profileId = await customerCommandRepository.AddAsync(profile, ct);
             await unitOfWork.CommitAsync(ct);
 
             return new CreateCustomerProfileResponseDto { Id = profileId };
