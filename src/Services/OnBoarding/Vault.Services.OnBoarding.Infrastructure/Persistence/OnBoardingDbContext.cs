@@ -5,6 +5,6 @@ namespace Vault.Services.OnBoarding.Infrastructure.Persistence
 {
     internal sealed class OnBoardingDbContext(DbContextOptions<OnBoardingDbContext> options) : DbContext(options)
     {
-        internal DbSet<PersistenceCustomerProfile> CustomerProfiles => Set<PersistenceCustomerProfile>();
+        internal DbSet<CustomerProfileEntity> CustomerProfiles => Set<CustomerProfileEntity>();
     }
 }

@@ -11,7 +11,7 @@ namespace Vault.Services.OnBoarding.Infrastructure.Adapters.Repositories
     {
         public async Task<Guid> AddAsync(CustomerProfile cp, CancellationToken ct = default)
         {
-            var pcp = new PersistenceCustomerProfile
+            var cpe = new CustomerProfileEntity
             {
                 UserId = cp.UserId,
                 FirstName = cp.FirstName,
@@ -20,7 +20,7 @@ namespace Vault.Services.OnBoarding.Infrastructure.Adapters.Repositories
                 KycStatus = cp.KycStatus,
             };
 
-            await dbContext.Set<PersistenceCustomerProfile>().AddAsync(pcp, ct);
+            await dbContext.Set<CustomerProfileEntity>().AddAsync(cpe, ct);
             return cp.Id;
         }
     }
@@ -28,7 +28,7 @@ namespace Vault.Services.OnBoarding.Infrastructure.Adapters.Repositories
     internal sealed class CustomerQueryRepository(OnBoardingDbContext dbContext) : ICustomerQueryRepository
     {
         public Task<bool> ExistsForUserAsync(Guid userId, CancellationToken ct = default) =>
-            dbContext.Set<PersistenceCustomerProfile>().AnyAsync(cp => cp.UserId == userId, ct);
+            dbContext.Set<CustomerProfileEntity>().AnyAsync(cp => cp.UserId == userId, ct);
     }
 
 }

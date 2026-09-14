@@ -1,7 +1,7 @@
 ﻿namespace Vault.Services.OnBoarding.Domain.Abstractions
 {
     /// <summary>Base class for aggregate roots : Domain Events, RaiseEvent() and ClearDomainEvents().</summary>
-    public abstract class AggregateRoot<TId> : Entity<TId>, IDomainEventCollection where TId : struct
+    public abstract class AggregateRoot<TId> : DomainModel<TId>, IDomainEventCollection where TId : struct
     {
         protected AggregateRoot() { } // EF
         protected AggregateRoot(TId id) : base(id) { }
