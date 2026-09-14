@@ -1,6 +1,6 @@
 ﻿using Vault.Services.OnBoarding.Domain.Customer.Enums;
 
-namespace Vault.Services.OnBoarding.Infrastructure.Adapters.Persistence.Models
+namespace Vault.Services.OnBoarding.Infrastructure.Persistence.Models
 {
     internal class PersistenceCustomerProfile
     {

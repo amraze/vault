@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Vault.Services.OnBoarding.Application\Vault.Services.OnBoarding.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistence\Migrations\" />
+  </ItemGroup>
+
 </Project>

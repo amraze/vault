@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Vault.Services.OnBoarding.Application.Ports;
 using Vault.Services.OnBoarding.Domain.Customer;
-using Vault.Services.OnBoarding.Infrastructure.Adapters.Persistence.Models;
+using Vault.Services.OnBoarding.Infrastructure.Persistence;
+using Vault.Services.OnBoarding.Infrastructure.Persistence.Models;
 
-namespace Vault.Services.OnBoarding.Infrastructure.Adapters.Persistence.Repositories
+namespace Vault.Services.OnBoarding.Infrastructure.Adapters.Repositories
 {
     /// <summary>EF Core adapter for <see cref="ICustomerRepository"/>.</summary>
     internal sealed class CustomerCommandRepository(OnBoardingDbContext dbContext) : ICustomerCommandRepository

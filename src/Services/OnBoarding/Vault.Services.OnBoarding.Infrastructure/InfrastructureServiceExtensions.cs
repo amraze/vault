@@ -1,9 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Vault.Services.OnBoarding.Application.Ports;
-using Vault.Services.OnBoarding.Infrastructure.Adapters.Persistence;
-using Vault.Services.OnBoarding.Infrastructure.Adapters.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Vault.Services.OnBoarding.Infrastructure.Adapters;
+using Vault.Services.OnBoarding.Infrastructure.Persistence;
+using Vault.Services.OnBoarding.Infrastructure.Adapters.Repositories;
 namespace Vault.Services.OnBoarding.Infrastructure
 {
     public static class InfrastructureServiceExtensions
@@ -21,7 +22,8 @@ namespace Vault.Services.OnBoarding.Infrastructure
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ICustomerCommandRepository, CustomerCommandRepository>();
+            services.AddScoped<ICustomerQueryRepository, CustomerQueryRepository>();
 
             return services;
         }

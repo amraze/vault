@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Vault.Services.OnBoarding.Infrastructure.Adapters.Persistence.Models;
+using Vault.Services.OnBoarding.Infrastructure.Persistence.Models;
 
-namespace Vault.Services.OnBoarding.Infrastructure.Adapters.Persistence
+namespace Vault.Services.OnBoarding.Infrastructure.Persistence
 {
     internal sealed class OnBoardingDbContext(DbContextOptions<OnBoardingDbContext> options) : DbContext(options)
     {
