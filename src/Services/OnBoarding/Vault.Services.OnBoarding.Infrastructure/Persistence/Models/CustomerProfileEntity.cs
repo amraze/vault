@@ -2,7 +2,7 @@
 
 namespace Vault.Services.OnBoarding.Infrastructure.Persistence.Models
 {
-    internal class PersistenceCustomerProfile
+    internal class CustomerProfileEntity : Entity
     {
         public Guid UserId { get; set; }
         public string FirstName { get; set; }
